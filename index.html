@@ -1,1 +1,95 @@
-Hello World
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Toto</title>
+    <style>
+    .button {
+      background-color: #4CAF50; /* Green */
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+</style>
+</head>
+
+
+<body>
+
+<input id="input" type="text" name="toto">
+<br />
+<button id="button" class="button">Parse formula</button>
+<table id="response">
+</table>
+
+<script type="text/javascript">
+
+(function() {
+	function callBackEnd(valeur){
+		var xhr = new XMLHttpRequest();
+		var proxyPath = "https://cors-anywhere.herokuapp.com/"
+		var path = "https://parsechemicalformula.herokuapp.com/getmsg/"
+		var url = new URL(proxyPath + path)
+		url.searchParams.set('formula', valeur);
+		xhr.open('GET', url, true);
+		xhr.responseType = 'json';
+		xhr.onload = function () {
+			if (xhr.status != 200) { // HTTP error?
+    			// handle error
+    			alert( 'Error: ' + responseObj);
+    			return;
+    		}
+    		let responseObj = xhr.response
+    		if ("ERROR" in responseObj) { // API returns an error?
+    			// handle error
+    			alert( 'Error: ' + responseObj["ERROR"]);
+    			return;
+    		}
+		 	fillReponse(responseObj["MESSAGE"]);
+		};
+		xhr.onerror = function() {
+			console.log("error");
+		};
+		xhr.send();
+	}
+	function fillReponse(dict){
+		var tbody = createTable(dict);
+		var table = document.getElementById("response");
+		table.innerText = "";
+		table.appendChild(tbody);
+	}
+	function createTable(dict){
+		var tbody = document.createElement("tbody");
+		for(var key in dict){
+			var tr = createRow(key, dict[key]);
+			tbody.appendChild(tr);
+		}
+		return tbody;
+	}
+	function createRow(key, value){
+		var tr = document.createElement("tr");
+		var tdKey = document.createElement("td");
+		var tdValue = document.createElement("td");
+		tdKey.innerText = key;
+		tdValue.innerText = value;
+		tr.appendChild(tdKey)
+		tr.appendChild(tdValue)
+		return tr;
+	}
+	var button = document.getElementById("button");
+	button.addEventListener("click", () => {
+		var input = document.getElementById("input");
+		callBackEnd(input.value);
+	})
+}
+)();
+</script>
+
+</body>
+</html>
