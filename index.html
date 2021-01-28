@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Toto</title>
+	<title>Chemistry is the study of change</title>
     <style>
     .button {
       background-color: #4CAF50; /* Green */
@@ -11,22 +11,64 @@
       padding: 15px 32px;
       text-align: center;
       text-decoration: none;
-      display: inline-block;
       font-size: 16px;
-      margin: 4px 2px;
       cursor: pointer;
+      margin:0 auto;
+      display:block;
+  	  font-family:'Chalkduster';    
     }
-</style>
+    div#relative{
+  	 position:relative;
+	}
+	div#thisDiv{
+	  position:absolute;
+      left:50%;
+ 	  transform: translateX(-50%);
+      -webkit-transform: translateX(-50%);
+	}
+	img {
+	  display: block;
+	  margin-left: auto;
+	  margin-right: auto;
+	}
+	table { 
+      margin-left: auto;
+      margin-right: auto;
+      font-family:'Chalkduster';
+	}
+	input{
+ 	  padding:5px;
+ 	  font-size:16px;
+  	  font-family:'Chalkduster';    
+}
+
+	</style>
 </head>
 
 
 <body>
+<div id="relative">
 
-<input id="input" type="text" name="toto">
-<br />
-<button id="button" class="button">Parse formula</button>
-<table id="response">
-</table>
+<div id="thisDiv">
+		<img src="ww.jpg"
+		     alt="The head and torso of a dinosaur skeleton;
+		          it has a large head with long sharp teeth"
+		     width="100%"
+		     height="100%"
+		     >
+		<br />
+		<input id="input" type="text" name="toto" placeholder="Enter your formula" style="display:block; margin:auto;">
+		<br />
+		<button id="button" class="button">Click to parse</button>
+		<br />
+		<br />
+		<br />
+		<table id="response">
+		</table>
+</div>
+</div>
+
+
 
 <script type="text/javascript">
 
@@ -75,10 +117,13 @@
 	function createRow(key, value){
 		var tr = document.createElement("tr");
 		var tdKey = document.createElement("td");
+		var tdImage = document.createElement("td");
 		var tdValue = document.createElement("td");
 		tdKey.innerText = key;
+		tdImage.innerHTML="<img src=\"small_arrow.png\" width=\"30%\" height=\"30%\">";
 		tdValue.innerText = value;
 		tr.appendChild(tdKey)
+		tr.appendChild(tdImage)
 		tr.appendChild(tdValue)
 		return tr;
 	}
