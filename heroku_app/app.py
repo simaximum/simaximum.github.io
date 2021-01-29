@@ -7,21 +7,21 @@ app = Flask(__name__)
 
 @app.route('/getmsg/', methods=['GET'])
 def respond():
-    # Retrieve the name from url parameter
-    name = request.args.get("formula", None)
+    # Retrieve the formula from url parameter
+    formula = request.args.get("formula", None)
 
     response = {}
 
-    # Check if user sent a name at all
-    if not name:
+    # Check if user sent a formula at all
+    if not formula:
         response["ERROR"] = "Please enter a formula."
-    # Check if the user entered a number not a name
-    elif str(name).isdigit():
+    # Check if the user entered a number not a formula
+    elif str(formula).isdigit():
         response["ERROR"] = "Formula can't be fully numeric."
-    # Now the user entered a valid name
+    # Now try to parse the formula
     else:
         try:
-            response["MESSAGE"] = parse_formula(str(name))
+            response["MESSAGE"] = parse_formula(str(formula))
         except ValueError as e:
             response["ERROR"] = str(e)
 

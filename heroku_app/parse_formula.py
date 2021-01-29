@@ -17,47 +17,67 @@ symbols = (
 
 def _is_balanced(formula):
     """Check if all sort of brackets come in pairs."""
-    # Very naive check, just here because you always need some input checking
+    # Naive check
     c = Counter(formula)
     return c['['] == c[']'] and c['{'] == c['}'] and c['('] == c[')']
 
 
-def parse_formula(molecule):
+def parse_formula(formula):
+    """Parse the formula."""
 
-    if not _is_balanced(molecule):
+    if not _is_balanced(formula):
         raise ValueError('Unbalanced formula')
 
-    full = []
-    last = [Counter()]
-    multi = 0
+    # Final list of parsed atoms
+    final_list = []
+    # Currently parsed list of atoms
+    current_list = [Counter()]
+    # Number of multiplications to perform
+    nb_multiplications = 0
+    # Action switch
     action = ""
 
-    for token in re.findall('[A-Z][a-z]?|\d+|.', molecule):
+    # Divide formula into its tokens
+    formula_tokens = re.findall('[A-Z][a-z]?|\d+|.', formula)
+
+    for token in formula_tokens:
         if token in symbols:
-            last[-1] = last[-1] + Counter({token})
+            # Add atom to the currently parsed list, action to atom symbol
+            current_list[-1] = current_list[-1] + Counter({token})
             action = token
+
         elif token.isdecimal():
             count = int(token)
             if action.isalpha():
-                last[-1][action] = last[-1][action] * count
+                # Multiply count of last seen atom
+                current_list[-1][action] = current_list[-1][action] * count
             elif action in ')]}':
-                for element in last[multi-1:]:
-                    for k in element:
-                        element[k] = element[k] * count
-                multi -= 1
-        elif token in '([{':
-            if multi == 0:
-                full.append(last)
-                last = [Counter()]
+                # Multiply count of all atom groups between last seen parentheses
+                for group in current_list[nb_multiplications-1:]:
+                    for atom in group:
+                        group[atom] = group[atom] * count
+                nb_multiplications -= 1
             else:
-                last.append(Counter())
-            multi += 1
+                raise ValueError('Formula cannot start with a number')
+
+        elif token in '([{':
+            if nb_multiplications == 0:
+                # Non-nested opening parenthesis: add currently parsed list to final list, and start a new one
+                final_list.append(current_list)
+                current_list = [Counter()]
+            else:
+                # Nested opening parenthesis: add a new atom group to currently parsed list
+                current_list.append(Counter())
+            nb_multiplications += 1
+
         elif token in ')]}':
+            # Action to closing parenthesis
             action = token
 
         else:
             raise ValueError(f'Unrecognized element in formula: {token}')
 
-    full.append(last)
-    flat_full = [item for sublist in full for item in sublist]
-    return sum(flat_full, Counter())
+    # Finalize final list, flatten it, return aggregated counters
+    final_list.append(current_list)
+    flat_final_list = [item for sublist in final_list for item in sublist]
+    return sum(flat_final_list, Counter())
