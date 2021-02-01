@@ -39,8 +39,8 @@
 	input{
  	  padding:5px;
  	  font-size:16px;
-  	  font-family:'Chalkduster';    
-}
+  	  font-family:'Chalkduster';
+  	}
 
 	</style>
 </head>
@@ -50,10 +50,7 @@
 <div id="relative">
 
 <div id="thisDiv">
-		<img src="images/ww.jpg"
-		     width="100%"
-		     height="100%"
-		     >
+		<img src="images/ww.jpg" width="100%" height="100%">
 		<br />
 		<input id="input" type="text" name="toto" placeholder="Enter your formula" style="display:block; margin:auto;">
 		<br />
@@ -71,34 +68,34 @@
 <script type="text/javascript">
 
 (function() {
-	function callBackEnd(valeur){
+	function callBackEnd(formula){
 		var xhr = new XMLHttpRequest();
+		// Use proxy to prevent bypass CORS policy 
 		var proxyPath = "https://cors-anywhere.herokuapp.com/"
 		var path = "https://parsechemicalformula.herokuapp.com/getmsg/"
 		var url = new URL(proxyPath + path)
-		url.searchParams.set('formula', valeur);
+		url.searchParams.set('formula', formula);
+		// Call endpoint with GET method 
 		xhr.open('GET', url, true);
 		xhr.responseType = 'json';
 		xhr.onload = function () {
 			if (xhr.status != 200) { // HTTP error?
-    			// handle error
+    			// Handle error
     			alert( 'Error: ' + responseObj);
     			return;
     		}
     		let responseObj = xhr.response
     		if ("ERROR" in responseObj) { // API returns an error?
-    			// handle error
+    			// Handle error
     			alert( 'Error: ' + responseObj["ERROR"]);
     			return;
     		}
-    	fillReponse(responseObj["MESSAGE"]);
-		};
-		xhr.onerror = function() {
-			console.log("error");
+    	// Fill table with parsed formula
+    	fillResponse(responseObj["MESSAGE"]);
 		};
 		xhr.send();
 	}
-	function fillReponse(dict){
+	function fillResponse(dict){
 		var tbody = createTable(dict);
 		var table = document.getElementById("response");
 		table.innerText = "";

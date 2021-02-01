@@ -48,7 +48,7 @@ def parse_formula(formula):
 
         elif token.isdecimal():
             count = int(token)
-            if action.isalpha():
+            if action in symbols:
                 # Multiply count of last seen atom
                 current_list[-1][action] = current_list[-1][action] * count
             elif action in ')]}':
