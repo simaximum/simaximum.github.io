@@ -3,43 +3,43 @@
 
 <head>
 	<title>Chemistry is the study of change</title>
-    <style>
-    .button {
-      background-color: #4CAF50; /* Green */
-      border: none;
-      color: white;
-      padding: 15px 32px;
-      text-align: center;
-      text-decoration: none;
-      font-size: 16px;
-      cursor: pointer;
-      margin:0 auto;
-      display:block;
-  	  font-family:'Chalkduster';    
+	<style>
+	.button {
+		background-color: #4CAF50; /* Green */
+		border: none;
+		color: white;
+		padding: 15px 32px;
+		text-align: center;
+		text-decoration: none;
+		font-size: 16px;
+		cursor: pointer;
+		margin:0 auto;
+		display:block;
+		font-family:'Chalkduster';    
     }
-    div#relative{
-  	 position:relative;
+	div#relative{
+		position:relative;
 	}
 	div#thisDiv{
-	  position:absolute;
-      left:50%;
- 	  transform: translateX(-50%);
-      -webkit-transform: translateX(-50%);
+		position:absolute;
+		left:50%;
+		transform: translateX(-50%);
+		-webkit-transform: translateX(-50%);
 	}
 	img {
-	  display: block;
-	  margin-left: auto;
-	  margin-right: auto;
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
 	}
 	table { 
-      margin-left: auto;
-      margin-right: auto;
-      font-family:'Chalkduster';
+		margin-left: auto;
+		margin-right: auto;
+		font-family:'Chalkduster';
 	}
 	input{
- 	  padding:5px;
- 	  font-size:16px;
-  	  font-family:'Chalkduster';
+		padding:5px;
+		font-size:16px;
+		font-family:'Chalkduster';
   	}
 
 	</style>
@@ -80,18 +80,18 @@
 		xhr.responseType = 'json';
 		xhr.onload = function () {
 			if (xhr.status != 200) { // HTTP error?
-    			// Handle error
-    			alert( 'Error: ' + responseObj);
-    			return;
-    		}
-    		let responseObj = xhr.response
-    		if ("ERROR" in responseObj) { // API returns an error?
-    			// Handle error
-    			alert( 'Error: ' + responseObj["ERROR"]);
-    			return;
-    		}
-    	// Fill table with parsed formula
-    	fillResponse(responseObj["MESSAGE"]);
+				// Handle error
+				alert( 'Error: ' + responseObj);
+				return;
+			}
+			let responseObj = xhr.response
+			if ("ERROR" in responseObj) { // API returns an error?
+				// Handle error
+				alert( 'Error: ' + responseObj["ERROR"]);
+				return;
+			}
+		// Fill table with parsed formula
+		fillResponse(responseObj["MESSAGE"]);
 		};
 		xhr.send();
 	}
