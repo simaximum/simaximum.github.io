@@ -33,11 +33,11 @@ def _is_balanced(formula):
             if (len(stack) > 0) and (i == brackets_map[stack[-1]]):
                 stack.pop()
             else:
-                return "Unbalanced"
+                return False
     if len(stack) == 0:
-        return "Balanced"
+        return True
     else:
-        return "Unbalanced"
+        return False
 
 
 def parse_formula(formula):
