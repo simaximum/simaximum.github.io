@@ -14,19 +14,37 @@ symbols = (
     'Rg', 'Cn', 'Uut', 'Fl', 'Uup', 'Lv', 'Uus', 'Uuo'
 )
 
+brackets_map = {
+    '(': ')',
+    '[': ']',
+    '{': '}',
+}
+
 
 def _is_balanced(formula):
-    """Check if all sort of brackets come in pairs."""
-    # Naive check
-    c = Counter(formula)
-    return c['['] == c[']'] and c['{'] == c['}'] and c['('] == c[')']
+    """Check if brackets are well balanced."""
+    stack = []
+    opening = brackets_map.keys()
+    closing = brackets_map.values()
+    for i in formula:
+        if i in opening:
+            stack.append(i)
+        elif i in closing:
+            if (len(stack) > 0) and (i == brackets_map[stack[-1]]):
+                stack.pop()
+            else:
+                return "Unbalanced"
+    if len(stack) == 0:
+        return "Balanced"
+    else:
+        return "Unbalanced"
 
 
 def parse_formula(formula):
     """Parse the formula."""
 
     if not _is_balanced(formula):
-        raise ValueError('Unbalanced formula')
+        raise ValueError('Unbalanced brackets')
 
     # Final list of parsed atoms
     final_list = []
