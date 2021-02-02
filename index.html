@@ -70,7 +70,7 @@
 (function() {
 	function callBackEnd(formula){
 		var xhr = new XMLHttpRequest();
-		// Use proxy to prevent bypass CORS policy 
+		// Use proxy to bypass CORS error
 		var proxyPath = "https://cors-anywhere.herokuapp.com/"
 		var path = "https://parsechemicalformula.herokuapp.com/getmsg/"
 		var url = new URL(proxyPath + path)
