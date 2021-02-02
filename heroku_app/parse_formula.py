@@ -60,7 +60,7 @@ def parse_formula(formula):
 
     for token in formula_tokens:
         if token in symbols:
-            # Add atom to the currently parsed list, action to atom symbol
+            # Add atom to the currently parsed list, switch 'action' to atom symbol
             current_list[-1] = current_list[-1] + Counter({token})
             action = token
 
@@ -70,7 +70,7 @@ def parse_formula(formula):
                 # Multiply count of last seen atom
                 current_list[-1][action] = current_list[-1][action] * count
             elif action in ')]}':
-                # Multiply count of all atom groups between last seen parentheses
+                # Multiply count of all atom groups between last seen brackets
                 for group in current_list[nb_multiplications-1:]:
                     for atom in group:
                         group[atom] = group[atom] * count
@@ -80,16 +80,16 @@ def parse_formula(formula):
 
         elif token in '([{':
             if nb_multiplications == 0:
-                # Non-nested opening parenthesis: add currently parsed list to final list, and start a new one
+                # Non-nested opening bracket: add currently parsed list to final list, and start a new one
                 final_list.append(current_list)
                 current_list = [Counter()]
             else:
-                # Nested opening parenthesis: add a new atom group to currently parsed list
+                # Nested opening bracket: add a new atom group to currently parsed list
                 current_list.append(Counter())
             nb_multiplications += 1
 
         elif token in ')]}':
-            # Action to closing parenthesis
+            # Switch 'action' to closing brackets
             action = token
 
         else:
